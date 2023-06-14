@@ -60,10 +60,6 @@ export class UserService {
   async toggleFavorites(productId: number, userId: User["id"]) {
     const user = await this.byId(userId);
 
-    if (!user) {
-      throw new NotFoundException("User not found");
-    }
-
     const isExists = user.favorites.some((product) => product.id === productId);
 
     await this.prisma.user.update({
