@@ -4,7 +4,8 @@ import { Product, User } from "@prisma/client";
 
 import { PrismaService } from "src/prisma/prisma.service";
 
-import { RETURN_REVIEW } from "./config/return-review.object";
+import { RETURN_REVIEW } from "../config/returnObjects/return-review.object";
+
 import { ReviewDto } from "./dto/review.dto";
 
 interface CreateReviewParamsType {

@@ -7,9 +7,9 @@ import {
 import type { Prisma, User } from "@prisma/client";
 import { hash } from "argon2";
 
+import { RETURN_USER } from "src/config";
 import { PrismaService } from "src/prisma/prisma.service";
 
-import { RETURN_CONFIG_USER_SELECT } from "./config/return-type.object";
 import { UserDto } from "./dto/user.dto";
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UserService {
   async byId(id: User["id"], selectObject: Prisma.UserSelect = {}) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: Object.assign(RETURN_CONFIG_USER_SELECT, selectObject),
+      select: Object.assign(RETURN_USER, selectObject),
     });
 
     if (!user) {
@@ -53,7 +53,7 @@ export class UserService {
           ? await hash(dto.password)
           : currentUser.password,
       },
-      select: RETURN_CONFIG_USER_SELECT,
+      select: RETURN_USER,
     });
   }
 

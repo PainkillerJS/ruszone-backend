@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
-export const RETURN_CONFIG_USER_SELECT = {
+export const RETURN_USER = {
   id: true,
   email: true,
   name: true,

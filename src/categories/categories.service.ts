@@ -1,20 +1,18 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
-import type { Category } from "@prisma/client";
+import type { Category, Prisma } from "@prisma/client";
 
-import type { CommonKeys } from "src/common/ts-utils";
 import { generateSlug } from "src/common/utils/generateSlug";
+import { RETURN_CATEGORY } from "src/config/returnObjects/return-category.object";
 import { PrismaService } from "src/prisma/prisma.service";
 
-import { returnCategoryObject } from "./config/return-category.object";
 import { CategoriesDto } from "./dto/categories.dto";
 
 type GetCategoryByParamTypeParams = Pick<Category, "id" | "slug">;
 
-type GetCategoryByParamTypeReturn = Pick<
-  Category,
-  CommonKeys<typeof returnCategoryObject, Category>
->;
+type GetCategoryByParamTypeReturn = Prisma.CategoryGetPayload<{
+  select: typeof RETURN_CATEGORY;
+}>;
 
 @Injectable()
 export class CategoriesService {
@@ -28,7 +26,7 @@ export class CategoriesService {
   ): Promise<GetCategoryByParamTypeReturn> {
     const category = await this.prisma.category.findUnique({
       where: { [param]: value },
-      select: returnCategoryObject,
+      select: RETURN_CATEGORY,
     });
 
     if (!category) {
@@ -39,7 +37,7 @@ export class CategoriesService {
   }
 
   async getAll() {
-    return this.prisma.category.findMany({ select: returnCategoryObject });
+    return this.prisma.category.findMany({ select: RETURN_CATEGORY });
   }
 
   async byId(id: Category["id"]) {
